@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<form action="" method="POST">
+{% csrf_token %}
+    <button type="submit" value={{action}} name="action" >{{action}}</button>
+</form>
+
+<div id="status">
+    Simulaciones registradas: <br>
+    {{total}} <br>
+
+    Simulaciones satisfactorias<br>
+    {{total_success}}<br>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+(function worker() {
+  $.ajax({
+    url: "{% url 'async_mldb_status' %}", 
+    success: function(data) {
+      $('#status').html(data);
+    },
+    complete: function() {
+      // Schedule the next request when the current one's complete
+      setTimeout(worker, 15000);
+    }
+  });
+})();
+</script>
+
+{% endblock %}

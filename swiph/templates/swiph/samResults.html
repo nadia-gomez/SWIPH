@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="container">
+
+    <h5>SAM IPH Fresnel model - results</h5>
+    <hr>
+
+    <hr>
+    <div class="row">
+        <div class="col l6" >
+            <b>Annual field energy:</b> {{result.Annual_Field_Energy}} MWh/year <br>
+            <b>Annual energy:</b> {{result.Annual_Energy}} MWh/year <br>
+            <b>Thermal energy consumption:</b> {{result.Thermal_energy_consumption}} MWh/year
+
+        </div>
+    </div>
+  
+
+    <hr>
+
+    <div class="row">
+        <div class="col l6">
+            {{ div_prod | safe }}
+        </div>
+        <div class="col l6">
+            <h5>Energy breakdown</h5>
+            <b>Energy inc SF:</b> {{Q_inc_tot}} MWh/year <br>
+            <b>Optical eff</b> {{OptEff}} % <br>
+            <b>Energy inc REC:</b> {{Q_inc_rec}} MWh/year <br>
+            <b>Energy abs REC:</b> {{Q_abs_rec}} MWh/year <br>
+            
+            <b>Thermal losses:</b> {{Q_thermal}} MWh/year
+
+        </div>
+   
+    </div>
+    <div class="row">
+        <br>
+        <div class="col l3">
+            <a onclick="window.location='{% url 'samResults'  pk=id plt=1 %}'" class="waves-effect waves-light blue btn-small ">WINTER</a>
+        </div>
+        <div class="col l3">
+            <a onclick="window.location='{% url 'samResults'  pk=id plt=2 %}'" class="waves-effect waves-light green btn-small ">SPRING</a>
+        </div>
+        <div class="col l3">
+            <a onclick="window.location='{% url 'samResults'  pk=id plt=3 %}'" class="waves-effect waves-light orange btn-small ">SUMMER</a>
+        </div>
+        <div class="col l3">
+            <a onclick="window.location='{% url 'samResults'  pk=id plt=4 %}'" class="waves-effect waves-light brown btn-small ">AUTUMN</a>
+        </div>
+    </div>
+    <div class="row">
+            {{ div_prod2 | safe }}
+    </div>
+
+    <div class="row">
+        <br>
+        <div class="col l2 m4 s4 disabled">
+              <a href="{% url 'basicInput' pk=entry.id %}"   class="waves-effect waves-light orange darken-4 btn-small " title="Generate SAM file"> <b>SAM file</b> </a>
+   
+        </div>
+        <div class="col l3 m4 s4">
+                <a href="{% url 'advancedInput' pk=entry.id %}"  class="waves-effect waves-light red darken-4 btn-small " title="Back"> <b>SIMULATE AGAIN</b> </a>
+        </div>
+        <div class="col l3 m4 s4 disabled">
+                <a onclick="window.location='{% url 'basicInput' pk=entry.id %}'" class="waves-effect waves-light cyan darken-4 btn-small"><b>MORE PLOTS</b> </a>
+        </div>
+    
+    </div>
+    <br>
+
+</div>
+{{ script_prod | safe }}      
+{{ script_prod2 | safe }}   
+{% endblock %}

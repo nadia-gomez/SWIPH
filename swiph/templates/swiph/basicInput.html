@@ -1,0 +1,676 @@
+{% extends 'base.html'%}
+
+{% block extra_headers %}
+<style>
+
+input:invalid{
+    border-color: red;
+    background-color: #FDD;
+    border-width: medium;
+}
+
+input:valid{
+    border-color: green;
+    border-width: medium;
+}
+
+input:valid{
+    border-color: green;
+    border-width: medium;
+}
+
+/*
+    /* Este es el diseño para nuestros mensajes de error */
+.error {
+    width : 100%;
+    padding: 0;
+
+    font-size: 80%;
+    color: red;
+}
+
+.error.active {
+    padding: 0.3em;
+}
+*/
+
+</style>
+{% endblock extra_headers %}
+
+{% block content %}
+<div class="containerBasic">
+    <section class="section">
+        <h4 class="center"> <b>BASIC INPUTS</b> - Simulation {{id}} - {{industry}}</h4>
+        <h6 class="center"> <b>SAM IPH DSG - Fresnel model </b></h6>
+        <br>
+        <h6 class="center">Please introduce the basic inputs (all are necessary for the simulation)</h6>
+
+        <form method="POST" id="basic_form" onsubmit="return validateForm()">{% csrf_token %}
+            <div class="row">
+                <div class="col l6" id="async_nLoops">
+                    <div class="card-panel" style="background-color:rgb(225, 236, 250)">
+                        <div class="row">
+                            <span> <i>Size of the solar field: </i> </span> 
+                           </div><br>
+
+                        <div class="row" style="align-items: center;">
+                            
+                            <div class="col l6"> <span> Numer of parallel loops: </span>  </div>
+                            <div class="col l6">
+                                <input id="{{form.nLoops.auto_id}}" name="nLoops" placeholder="Parallel loops" value="{{default_nLoops}}" min="1"> 
+                                
+                            </div>
+                        </div>
+
+                        <div class="row" style="align-items: center;">
+                            <div class="col l6"> <span> Numer of collectors per loop: </span>  </div>
+                            <div class="col l6">
+                                <input id="{{form.nModBoil.auto_id}}" name="nModBoil" placeholder="No of modules" value="{{default_nModBoil}}" min="1"> 
+                                <span class="red-text">{{form.nModBoil.errors}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col l6">
+                    <div class="card-panel" id="classificator_alert">
+                    Error prevention panel.
+                    </div>
+                    <a href='{% url "SW_index" %}' class="waves-effect waves-light cyan darken-4 btn-small"><b>CHANGE INDUSTRY</b> </a>
+                    <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l6">
+                    <div class="card-panel">  
+                        <div class="row">
+                            <div class="col l12 m12 s12">
+                                <h6 class="center">Basic inputs</h6>
+                                    <div id="nMod_div">
+                                        <div class="row" style="display: flex;align-items: center;">
+                                            <div class="col l4"> <span> <b>Location:</b> </span>  </div>
+                                            <div class="col l8">
+                                                <div class="input-field">
+                                                    <select id="location_id" name='location' required>
+                                                        <option value="" disabled="" selected="">Location</option>
+                                                        <option value="Daggett"{% if form.location.value == "Daggett" %} selected {%endif%}>Daggett</option>
+                                                        <option value="Fargo"{% if form.location.value == "Fargo" %} selected {%endif%}>Fargo</option>
+                                                        <option value="Tucson"{% if form.location.value == "Tucson" %} selected {%endif%}>Tucson</option>
+                                                        <option value="Phoenix"{% if form.location.value == "Phoenix" %} selected {%endif%}>Phoenix</option>
+                                                        <option value="Blythe"{% if form.location.value == "Blythe" %} selected {%endif%}>Blythe</option>
+                                                        <option value="Imperial"{% if form.location.value == "Imperial" %} selected {%endif%}>Imperial</option>
+                                                    
+                                                    </select>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display: flex;align-items: center;">
+                                            <div class="col l4"> <span> <b>Process pressure:</b> </span>  </div>
+                                            <div class="col l6">
+                                                <input id="pressure_id" name="pressure" placeholder="Pressure" value="{{form.pressure.value|default:9}}" min="0.01" required>
+                                                <span class="red-text">{{form.pressure.errors}}</span>
+                                            </div>
+                                            <div class="col l2"> <span>bar</span>  </div>   
+                                        </div>
+                                        <div class="row" style="display: flex;align-items: center;">
+                                            <div class="col l4"> <span> <b>Inlet temperature:</b> </span>  </div>
+                                            <div class="col l6">
+                                                <input id="tempIN_id" name="tempIN" placeholder="Temperature" value="{{form.tempIN.value}}" min="0.01" required>
+                                                <span class="red-text">{{form.tempIN.errors}}</span>
+                                            </div>
+                                            <div class="col l2"> <span> <sup>o</sup>C </span>  </div>   
+                                        </div>
+                                    </div>
+                                    <div id="demand_div">
+                                        <div class="row" style="display: flex;align-items: center;">
+                                            <div class="col l4"> <span> <b>Energy demand:</b> </span>  </div>
+                                            <div class="col l4">
+                                                <div class="input-field">
+                                                    <input id="{{form.demand.auto_id}}" name="demand" placeholder="Demand" value="{{form.demand.value}}" min="2000" required><!-- Revisar minimo de energia-->
+                                                    <span class="red-text">{{form.demand.errors}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col l4">
+                                                <div class="input-field">
+                                                    <select id="{{form.demandUnit.auto_id}}" name='demandUnit' required>
+                                                        <option value="" disabled="" selected="">Units</option>
+                                                        <option value="kWh"{% if form.demandUnit.value == "kWh" %} selected {%endif%}>kWh/year</option>
+                                                        <option value="MWh"{% if form.demandUnit.value == "MWh" %} selected {%endif%}>MWh/year</option>
+                                                        <option value="KJ"{% if form.demandUnit.value == "KJ" %} selected {%endif%}>KJ/year</option>
+                                                        <option value="BTU"{% if form.demandUnit.value == "BTU" %} selected {%endif%}>BTU/year</option>
+                                                        <option value="kcal"{% if form.demandUnit.value == "kcal" %} selected {%endif%}>kcal/year</option>
+                                                    </select>
+                                                    <span class="red-text">{{form.demandUnit.errors}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col l10"><span id="demand_jerror" class="red-text"></span></div> <br>
+                                        <div class="row" style="display: flex;align-items: center;">
+                                            <div class="col l4"> <span> <b>Daily schedule:</b> </span>  </div>
+                                            <div class="col l4"> 
+                                                <div class="input-field">
+                                                    <select id="{{form.hourINI.auto_id}}" name='hourINI' required>
+                                                        <option value="" disabled="" selected="">Start time</option>
+                                                        <option value=1 {% if form.hourINI.value == "1" %} selected {%endif%}>1</option>
+                                                        <option value=2 {% if form.hourINI.value == "2" %} selected {%endif%}>2</option>
+                                                        <option value=3 {% if form.hourINI.value == "3" %} selected {%endif%}>3</option>
+                                                        <option value=4 {% if form.hourINI.value == "4" %} selected {%endif%}>4</option>
+                                                        <option value=5 {% if form.hourINI.value == "5" %} selected {%endif%}>5</option>
+                                                        <option value=6 {% if form.hourINI.value == "6" %} selected {%endif%}>6</option>
+                                                        <option value=7 {% if form.hourINI.value == "7" %} selected {%endif%}>7</option>
+                                                        <option value=8 {% if form.hourINI.value == "8" %} selected {%endif%}>8</option>
+                                                        <option value=9 {% if form.hourINI.value == "9" %} selected {%endif%}>9</option>
+                                                        <option value=10 {% if form.hourINI.value == "10" %} selected {%endif%}>10</option>
+                                                        <option value=11 {% if form.hourINI.value == "11" %} selected {%endif%}>11</option>
+                                                        <option value=12 {% if form.hourINI.value == "12" %} selected {%endif%}>12</option>
+                                                        <option value=13 {% if form.hourINI.value == "13" %} selected {%endif%}>13</option>
+                                                        <option value=14 {% if form.hourINI.value == "14" %} selected {%endif%}>14</option>
+                                                        <option value=15 {% if form.hourINI.value == "15" %} selected {%endif%}>15</option>
+                                                        <option value=16 {% if form.hourINI.value == "16" %} selected {%endif%}>16</option>
+                                                        <option value=17 {% if form.hourINI.value == "17" %} selected {%endif%}>17</option>
+                                                        <option value=18 {% if form.hourINI.value == "18" %} selected {%endif%}>18</option>
+                                                        <option value=19 {% if form.hourINI.value == "19" %} selected {%endif%}>19</option>
+                                                        <option value=20 {% if form.hourINI.value == "20" %} selected {%endif%}>20</option>
+                                                        <option value=21 {% if form.hourINI.value == "21" %} selected {%endif%}>21</option>
+                                                        <option value=22 {% if form.hourINI.value == "22" %} selected {%endif%}>22</option>
+                                                        <option value=23 {% if form.hourINI.value == "23" %} selected {%endif%}>23</option>
+                                                        <option value=24 {% if form.hourINI.value == "24" %} selected {%endif%}>24</option>
+                                                    </select>
+                                                    <span class="red-text">{{form.hourINI.errors}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col l4"> 
+                                                <div class="input-field">
+                                                    <select id="{{form.hourEND.auto_id}}" name='hourEND' required>
+                                                        <option value="" disabled="" selected="">End time</option>
+                                                        <option value=1 {% if form.hourEND.value == "1" %} selected {%endif%}>1</option>
+                                                        <option value=2 {% if form.hourEND.value == "2" %} selected {%endif%}>2</option>
+                                                        <option value=3 {% if form.hourEND.value == "3" %} selected {%endif%}>3</option>
+                                                        <option value=4 {% if form.hourEND.value == "4" %} selected {%endif%}>4</option>
+                                                        <option value=5 {% if form.hourEND.value == "5" %} selected {%endif%}>5</option>
+                                                        <option value=6 {% if form.hourEND.value == "6" %} selected {%endif%}>6</option>
+                                                        <option value=7 {% if form.hourEND.value == "7" %} selected {%endif%}>7</option>
+                                                        <option value=8 {% if form.hourEND.value == "8" %} selected {%endif%}>8</option>
+                                                        <option value=9 {% if form.hourEND.value == "9" %} selected {%endif%}>9</option>
+                                                        <option value=10 {% if form.hourEND.value == "10" %} selected {%endif%}>10</option>
+                                                        <option value=11 {% if form.hourEND.value == "11" %} selected {%endif%}>11</option>
+                                                        <option value=12 {% if form.hourEND.value == "12" %} selected {%endif%}>12</option>
+                                                        <option value=13 {% if form.hourEND.value == "13" %} selected {%endif%}>13</option>
+                                                        <option value=14 {% if form.hourEND.value == "14" %} selected {%endif%}>14</option>
+                                                        <option value=15 {% if form.hourEND.value == "15" %} selected {%endif%}>15</option>
+                                                        <option value=16 {% if form.hourEND.value == "16" %} selected {%endif%}>16</option>
+                                                        <option value=17 {% if form.hourEND.value == "17" %} selected {%endif%}>17</option>
+                                                        <option value=18 {% if form.hourEND.value == "18" %} selected {%endif%}>18</option>
+                                                        <option value=19 {% if form.hourEND.value == "19" %} selected {%endif%}>19</option>
+                                                        <option value=20 {% if form.hourEND.value == "20" %} selected {%endif%}>20</option>
+                                                        <option value=21 {% if form.hourEND.value == "21" %} selected {%endif%}>21</option>
+                                                        <option value=22 {% if form.hourEND.value == "22" %} selected {%endif%}>22</option>
+                                                        <option value=23 {% if form.hourEND.value == "23" %} selected {%endif%}>23</option>
+                                                        <option value=24 {% if form.hourEND.value == "24" %} selected {%endif%}>24</option>
+                                    
+                                                    </select>
+                                                    <span class="red-text">{{form.hourEND.errors}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col l10"><span id="schedule_jerror" class="red-text"></span></div> <br>
+                                        <br>
+                                        <div class="row" style="display: flex;align-items: center;"> 
+                                            <div class="col l2"><span> <b>Working days:</b> </span></div>
+                                            <div class="col l10">
+                                                <label >
+                                                    <input id="{{form.Mond.auto_id}}" name="Mond" type="checkbox"{% if form.Mond.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Mon</span>
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Tues.auto_id}}" name="Tues" type="checkbox"{% if form.Tues.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Tue</span>
+                                                </label>
+                                                <label>
+                                                    <input id="{{form.Wend.auto_id}}" name="Wend" type="checkbox"{% if form.Wend.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Wen</span>                                                        
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Thur.auto_id}}" name="Thur" type="checkbox"{% if form.Thur.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Thu</span>                                                        
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Fri.auto_id}}" name="Fri" type="checkbox"{% if form.Fri.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Fri</span>
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Sat.auto_id}}" name="Sat" type="checkbox"{% if form.Sat.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Sat</span>
+                                                </label>    
+                                                <label >
+                                                    <input id="{{form.Sun.auto_id}}" name="Sun" type="checkbox"{% if form.Sun.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Sun</span>
+                                                </label>
+                                                                                                                                                                                                
+                                            </div>
+                                        </div>
+                                        <div class="col l10"><span style="color:green;"> <b>If no day is selected every day is considered</b> </span></div>
+                                        <br><br>
+                                        <div class="row" style="display: flex;align-items: center;"> 
+                                            <div class="col l2"><span> <b>Working months:</b> </span></div>
+                                            <div class="col l10">
+                                                <label >
+                                                    <input id="{{form.Jan.auto_id}}" name="Jan" type="checkbox"{% if form.Jan.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Jan</span>
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Feb.auto_id}}" name="Feb" type="checkbox"{% if form.Feb.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Feb</span>
+                                                </label>
+                                                <label>
+                                                    <input id="{{form.Mar.auto_id}}" name="Mar" type="checkbox"{% if form.Mar.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Mar</span>                                                        
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Apr.auto_id}}" name="Apr" type="checkbox"{% if form.Apr.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Apr</span>
+                                                </label>  
+                                                <label >
+                                                    <input id="{{form.May.auto_id}}" name="May" type="checkbox"{% if form.May.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">May</span>                                                        
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Jun.auto_id}}" name="Jun" type="checkbox"{% if form.Jun.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Jun</span>
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Jul.auto_id}}" name="Jul" type="checkbox"{% if form.Jul.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Jul</span>
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Aug.auto_id}}" name="Aug" type="checkbox"{% if form.Aug.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Aug</span>
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Sep.auto_id}}" name="Sep" type="checkbox"{% if form.Sep.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Sep</span>
+                                                </label>
+                                                <label>
+                                                    <input id="{{form.Oct.auto_id}}" name="Oct" type="checkbox"{% if form.Oct.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Oct</span>                                                        
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Nov.auto_id}}" name="Nov" type="checkbox"{% if form.Nov.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Nov</span>                                                        
+                                                </label>
+                                                <label >
+                                                    <input id="{{form.Dec.auto_id}}" name="Dec" type="checkbox"{% if form.Dec.value == "x" %} checked {%endif%}>
+                                                    <span class="checkboxWeek">Dec</span>
+                                                </label>                                                                                                        
+                                            </div>
+                                        </div>
+                                        <div class="col l10"><span style="color:green;"> <b>If no month is selected every month is considered</b> </span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+
+                    <div class="col l6">
+                        <div class="card-panel">
+                            <h6 class="center">Input description</h6>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Location:</b> </span>  </div>
+                                <div class="col l8"> Where is the factory located </div>      
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Process pressure:</b> </span>  </div>
+                                <div class="col l8"> Operation pressure of the process in bar </div>      
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Inlet temp:</b> </span>  </div>
+                                <div class="col l8"> Temperature of the feed water into the steam drum. If there is no return of condensates, the feed water temperature will be low (grid temperature). If there is a return of condensates in place, the temperature should be between 60 - 90ºC</div>      
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Demand:</b> </span>  </div>
+                                <div class="col l8"> Annual energy demand of the process</div>      
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Daily schedule:</b> </span>  </div>
+                                <div class="col l8"> On a daily basis, the demand of energy starts and ends at what time. Average values</div>      
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Working days:</b> </span>  </div>
+                                <div class="col l8"> Click on the days of the week in which the process is running</div>      
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col l4"> <span> <b>Working months:</b> </span>  </div>
+                                <div class="col l8"> Click on the month of the year in which the process is running</div>      
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br> 
+
+            <!-- <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> -->
+
+        </form>
+        
+    </section>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+    const tmy = document.getElementById("location_id");
+    const pressure = document.getElementById("pressure_id");
+    const tempIN = document.getElementById("tempIN_id");
+    const nModBoil = document.getElementById("{{form.nModBoil.auto_id}}");
+    const nLoops = document.getElementById("{{form.nLoops.auto_id}}");
+    const demand = document.getElementById("{{form.demand.auto_id}}");
+    const demandUnit = document.getElementById("{{form.demandUnit.auto_id}}");
+    const hourINI = document.getElementById("{{form.hourINI.auto_id}}");
+    const hourEND = document.getElementById("{{form.hourEND.auto_id}}");
+    var app_nLoops = true;
+    var app_nModBoil = true;
+
+    // Cosas por validar
+    //tmy.validity.valueMissing //Que se haya seleccionado una ciudad para hacer la simulacion
+
+    // Presión sea un numero y sea positiva
+    // Temperatura sea un numero y sea positiva
+    // nModBoil sea un numero y sea positivo
+    // nLoops sea un numero y sea positivo
+    function isNumberandInRange(input){
+        const spanError = document.querySelector('#' + input.id + ' + span.red-text');
+        if (input.validity.valueMissing){
+            spanError.textContent = 'You must enter a value';
+            return false
+        }
+        if (isNaN(input.value)){
+            input.setCustomValidity("NaN");
+            spanError.textContent = 'Please enter a valid number';
+            return false
+        } else {
+            if (parseFloat(input.value)>=parseFloat(input.getAttribute('min'))){
+                input.setCustomValidity("");
+                spanError.textContent = '';
+                return true
+            } else {
+                input.setCustomValidity("Under range");
+                spanError.textContent = 'Value below the limit';
+                return false
+            }
+        }
+    }
+
+    // Que el agua no se vaporice a esa presión y Temperatura
+    // Usar ajax
+    function isTPValid(tempIN, pressure){
+        const tempError = document.querySelector('#tempIN_id + span.red-text');
+        var r = false;
+        $.ajax({
+            async:false,
+            url:"{% url 'check_PT' %}",
+            data:{
+                'P': pressure.value,
+                'T': tempIN.value,
+            },
+            success: function(result){
+                r = (result == 'True'); // Para convertir a booleano de js el string que riginalmente era bool de python
+                //$("#classificator_alert").html(result);
+                },
+        });
+        if (r){
+            tempIN.setCustomValidity("");
+            pressure.setCustomValidity("");
+            tempError.textContent = '';
+        } else {
+            tempIN.setCustomValidity("Invalid T and P combination. 2-phase input fluid");
+            pressure.setCustomValidity("Invalid T and P combination. 2-phase input fluid");
+            tempError.textContent = 'Invalid T and P combination. 2-phase input fluid';
+        }
+        return r
+    }
+    
+    // Que la demanda sea un numero y sea positivo
+    //demandUnit.validity.valueMissing // Que se haya seleccionado una unidad
+    // demanda*demandUNits > 2000 GWh
+    function isDemandValid(demand, demandUnit){
+        const demandError = document.getElementById("demand_jerror");
+        var demandakWh = 1; // Que unidades son????
+
+        if (demand.validity.valueMissing || demandUnit.validity.valueMissing){
+            demandError.textContent = 'You must enter a the annual demand with its units';
+            document.getElementById(demandUnit.id).parentElement.getElementsByTagName('input')[0].style.borderColor='red';
+            document.getElementById(demandUnit.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            return false
+        } else {
+            document.getElementById(demandUnit.id).parentElement.getElementsByTagName('input')[0].style.borderColor='green';
+            document.getElementById(demandUnit.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+        }
+        
+        if (isNaN(demand.value)){
+            demand.setCustomValidity("NaN");
+            demandError.textContent = 'Please enter a valid number';
+            return false
+        } else {
+            if (demandUnit.value=='MWh') {
+                demandakWh=demand.value*1000;
+            } else if (demandUnit.value=='KJ') {
+                demandakWh=demand.value*0.000278;
+            } else if (demandUnit.value=='BTU') {
+                demandakWh=demand.value*0.000293;
+            } else if (demandUnit.value=='kcal') {
+                demandakWh=demand.value*0.001162;
+            } else {
+                demandakWh=demand.value
+            }
+            if (demandakWh>=parseFloat(demand.getAttribute('min'))){
+                demand.setCustomValidity("");
+                demandError.textContent = '';
+                return true
+            } else {
+                demand.setCustomValidity("Under range");
+                demandError.textContent = 'Demand value below the limit';
+                return false
+            }
+        }
+    }
+
+    // Que se haya seleccionado una hora de inicio y de final
+    // hourIni < HoutEND
+    function isScheduleValid(hourINI,hourEND){
+        const scheduleError = document.getElementById("schedule_jerror");
+        if (hourINI.validity.valueMissing || hourEND.validity.valueMissing){
+            scheduleError.textContent = 'You must enter a starting and ending time';
+            if (hourINI.validity.valueMissing){
+                document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderColor='red';
+                document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            } else {
+                document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderColor='green';
+                document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            }
+            if (hourEND.validity.valueMissing){
+                document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderColor='red';
+                document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            } else {
+                document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderColor='green';
+                document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            }
+
+            return false
+        }
+        if (parseInt(hourEND.value)<=parseInt(hourINI.value)){
+            hourINI.setCustomValidity("Ends before the start");
+            hourEND.setCustomValidity("Ends before the start");
+            scheduleError.textContent = 'The starting time has to be smaller than the ending time.';
+            document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderColor='red';
+            document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderColor='red';
+            document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+
+            return false
+        } else {
+            hourINI.setCustomValidity("");
+            hourEND.setCustomValidity("");
+            scheduleError.textContent = '';
+            document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderColor='green';
+            document.getElementById(hourINI.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderColor='green';
+            document.getElementById(hourEND.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            return true
+        }
+    }
+
+    function isTMYValid(tmy){
+        if (!(tmy.validity.valueMissing)){
+            document.getElementById(tmy.id).parentElement.getElementsByTagName('input')[0].style.borderColor='green';
+            document.getElementById(tmy.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            return true
+        } else {
+            document.getElementById(tmy.id).parentElement.getElementsByTagName('input')[0].style.borderColor='red';
+            document.getElementById(tmy.id).parentElement.getElementsByTagName('input')[0].style.borderWidth='medium';
+            return false
+        }
+    }
+
+    function isFormValid(pressure,tempIN,nModBoil,nLoops,tmy,demand,demandUnit,hourINI,hourEND){
+        
+        // To force the validation in all the variables
+        var good_pressure = isNumberandInRange(pressure);
+        var good_temp = isNumberandInRange(tempIN);
+        var good_TP = isTPValid(tempIN, pressure);
+        var good_nModBoil= isNumberandInRange(nModBoil);
+        var good_nLoops = isNumberandInRange(nLoops);
+        var good_tmy = isTMYValid(tmy);
+        var good_demand = isDemandValid(demand, demandUnit);
+        var good_schedule = isScheduleValid(hourINI,hourEND);
+
+        if  (good_pressure && good_temp && good_TP && good_nModBoil && good_nLoops && good_tmy && good_demand && good_schedule){
+            return true
+        } else {
+            return false
+        }
+    }
+
+    function validateForm(){
+        const tmy = document.getElementById("location_id");
+        const pressure = document.getElementById("pressure_id");
+        const tempIN = document.getElementById("tempIN_id");
+        const nModBoil = document.getElementById("{{form.nModBoil.auto_id}}");
+        const nLoops = document.getElementById("{{form.nLoops.auto_id}}");
+        const demand = document.getElementById("{{form.demand.auto_id}}");
+        const demandUnit = document.getElementById("{{form.demandUnit.auto_id}}");
+        const hourINI = document.getElementById("{{form.hourINI.auto_id}}");
+        const hourEND = document.getElementById("{{form.hourEND.auto_id}}");
+        return isFormValid(pressure,tempIN,nModBoil,nLoops,tmy,demand,demandUnit,hourINI,hourEND)
+    }
+
+    $('#{{form.demand.auto_id}}, #{{form.demandUnit.auto_id}}, #{{form.hourINI.auto_id}}, #{{form.hourEND.auto_id}}, #{{form.Mond.auto_id}}, #{{form.Tues.auto_id}}, #{{form.Wend.auto_id}}, #{{form.Thur.auto_id}}, #{{form.Fri.auto_id}}, #{{form.Sat.auto_id}}, #{{form.Sun.auto_id}}, #{{form.Jan.auto_id}}, #{{form.Feb.auto_id}}, #{{form.Mar.auto_id}}, #{{form.Apr.auto_id}}, #{{form.May.auto_id}}, #{{form.Jun.auto_id}}, #{{form.Jul.auto_id}}, #{{form.Aug.auto_id}}, #{{form.Sep.auto_id}}, #{{form.Oct.auto_id}}, #{{form.Nov.auto_id}}, #{{form.Dec.auto_id}}').change(function() {
+        app_nLoops = true; 
+    }); 
+
+
+    $('#location_id, #pressure_id, #tempIN_id').change(function() {
+        app_nModBoil = true; 
+    }); 
+
+    $("#{{form.nLoops.auto_id}}").change(function(){
+        app_nLoops = false;
+    });
+
+    $("#{{form.nModBoil.auto_id}}").change(function(){
+        app_nModBoil = false;
+    });
+
+    //form.addEventListener('input', function (event) {
+    $("#basic_form").change(function () {
+        // Cada vez que el usuario escribe algo.
+
+        // nmodules in series suggestion
+        // Si tenemos temp, pressure, tmy y NO tenemos un nModBoil valido.
+        if (isNumberandInRange(pressure) && isNumberandInRange(tempIN) && isTPValid(tempIN, pressure) && isTMYValid(tmy) && (app_nModBoil || !(isNumberandInRange(nModBoil))) ) {
+            $.ajax({
+                async: false,
+                url:"{% url 'async_nModBoil' %}",
+                data:{
+                    'P_turb_des': pressure.value,
+                    'T_cold_ref': tempIN.value,
+                    'location': tmy.value,
+                },
+                success: function(result){
+                    nModBoil.value = result;
+                    //$("#async_nLoops").html(result);
+                    },
+            });
+        }
+
+        // nLoops in the array
+        if (isDemandValid(demand, demandUnit) && isNumberandInRange(nModBoil) && isScheduleValid(hourINI,hourEND) && app_nLoops){
+            $.ajax({
+                url:"{% url 'async_project_shape' %}",
+                data:{
+                    'demand':demand.value,
+                    'hourINI':hourINI.value,
+                    'hourEND':hourEND.value,
+                    'Mond':document.getElementById("{{form.Mond.auto_id}}").checked,
+                    'Tues':document.getElementById("{{form.Tues.auto_id}}").checked,
+                    'Wend':document.getElementById("{{form.Wend.auto_id}}").checked,
+                    'Thur':document.getElementById("{{form.Thur.auto_id}}").checked,
+                    'Fri':document.getElementById("{{form.Fri.auto_id}}").checked,
+                    'Sat':document.getElementById("{{form.Sat.auto_id}}").checked,
+                    'Sun':document.getElementById("{{form.Sun.auto_id}}").checked,
+                    'Jan':document.getElementById("{{form.Jan.auto_id}}").checked,
+                    'Feb':document.getElementById("{{form.Feb.auto_id}}").checked,
+                    'Mar':document.getElementById("{{form.Mar.auto_id}}").checked,
+                    'Apr':document.getElementById("{{form.Apr.auto_id}}").checked,
+                    'May':document.getElementById("{{form.May.auto_id}}").checked,
+                    'Jun':document.getElementById("{{form.Jun.auto_id}}").checked,
+                    'Jul':document.getElementById("{{form.Jul.auto_id}}").checked,
+                    'Aug':document.getElementById("{{form.Aug.auto_id}}").checked,
+                    'Sep':document.getElementById("{{form.Sep.auto_id}}").checked,
+                    'Oct':document.getElementById("{{form.Oct.auto_id}}").checked,
+                    'Nov':document.getElementById("{{form.Nov.auto_id}}").checked,
+                    'Dec':document.getElementById("{{form.Dec.auto_id}}").checked,
+                    'nModBoil': nModBoil.value,
+                    'demandUnit':demandUnit.value,
+                    'pk': {{id}},
+                },
+                success: function(result){
+                    nLoops.value = result.default_nLoops;
+                    nModBoil.value = result.default_nModBoil;
+                    $("#design_power_id").html("<span> <b> Initial pre-design. Using "+result.designPower+" kW as instant design power</b> </span>" );
+                },
+            });
+        } else if (!(isDemandValid(demand, demandUnit)) || !(isScheduleValid(hourINI,hourEND))){
+            $("#design_power_id").html("<span> <b> No demand selected yet</b> </span>")
+        }
+
+        // basic classificator
+        if (isNumberandInRange(pressure) && isNumberandInRange(tempIN) && isTPValid(tempIN, pressure) && isNumberandInRange(nModBoil) && isTMYValid(tmy)){
+            $.ajax({
+                url:"{% url 'async_basic_classificator' %}",
+                data:{
+                    'P_turb_des': pressure.value,
+                    'T_cold_ref': tempIN.value,
+                    'nModBoil': nModBoil.value,
+                    'location': tmy.value,
+                },
+                success: function(result){
+                    $("#classificator_alert").html(result);
+                    },
+            });
+        }
+        isFormValid(pressure,tempIN,nModBoil,nLoops,tmy,demand,demandUnit,hourINI,hourEND);
+    });
+
+</script>
+
+{% endblock %}

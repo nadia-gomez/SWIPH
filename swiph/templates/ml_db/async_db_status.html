@@ -1,0 +1,33 @@
+
+Simulaciones registradas: <br>
+{{total}} <br>
+
+{% for result in results %}
+Resultado: {{result.0}}<br>
+Cantidad: {{result.1}}<br><br>
+{% endfor %}
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>P_turb_des</th>
+        <th>T_cold_ref</th>
+        <th>nModBoil</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>MSNM</th>
+        <th>Resultado</th>
+    </tr>
+    {% for sim in latest_sims %}
+    <tr>
+        <th>{{sim.id}}</th>
+        <th>{{sim.P_turb_des}}</th>
+        <th>{{sim.T_cold_ref}}</th>
+        <th>{{sim.nModBoil}}</th>
+        <th>{{sim.lat}}</th>
+        <th>{{sim.lon}}</th>
+        <th>{{sim.asm}}</th>
+        <th><p>{{sim.label}}</p></th>
+    </tr>
+    {% endfor %}
+</table>

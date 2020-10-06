@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div>
+    <img src="/static/images/sim_error.png" style="display: block; margin-left: auto; margin-right: auto; width: 30%;" >
+    <a href='https://www.freepik.es/vectores/web'>Vector de Web creado por stories - www.freepik.es</a>
+</div>
+
+<div class="row card-panel" style="text-align: center;">
+    That's rare! Your simulation resulted in an unexpected error with code {{error.pk}}.  That is <br>
+
+    <b style="color:red">{{error.error}}</b><br>
+
+    You should check your input variables.<br>
+    <a href='{% url "basicInput" sim_id %}' class="waves-effect waves-light cyan darken-4 btn-small"><b>Change variables</b> </a>
+    
+</div>
+{% endblock %}

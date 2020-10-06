@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col l12">
+        <div class="card-panel" style="background-color:lightsteelblue">
+            
+            <div class="row">
+                <span> <i>Size of the solar field: </i> </span> 
+            </div>
+
+            <div class="row" style="display: flex;align-items: center;">
+                
+                <div class="col l4"> <span> <b> Initial pre-design. {% if designPower %}Using {{designPower}} kW as instant design power {% else %}No demand selected yet{% endif %}</b> </span>  </div>
+                <div class="col l2"> <span> Numer of parallel loops: </span>  </div>
+                <div class="col l1">
+                    <input name="nLoops" placeholder="Parallel loops" {% if default_nLoops %} value="{{default_nLoops}}" {% endif %}> 
+                    <span class="red-text">{{form.nLoops.errors}}</span>
+                </div>
+                <div class="col l2"> <span> Numer of collectors per loop: </span>  </div>
+                <div class="col l1">
+                    <input id="{{form.nModBoil.auto_id}}" name="nModBoil" placeholder="No of modules" {% if default_nModBoil %} value="{{default_nModBoil}}"{% endif %}> 
+                    <span class="red-text">{{form.nModBoil.errors}}</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

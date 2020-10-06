@@ -1,0 +1,34 @@
+Industry,Process,Size,pressure,tempIN,demand [MWh],hourINI,hourEND,Mond,Tues,Wend,Thur,Fri,Sat,Sun,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec
+laundry,washing,big,10,20,8500,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+laundry,washing,medium,8,20,3400,6,22,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+laundry,washing,small,6,20,1200,6,22,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+laundry,ironing,big,8,90,8500,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+laundry,ironing,medium,6,80,3400,6,22,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+laundry,ironing,small,6,65,1200,6,22,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+dairy,pasteurization,big,6,65,15300,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+dairy,pasteurization,medium,6,65,4100,6,22,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+dairy,pasteurization,small,4,65,2800,6,18,x,x,x,x,x,,,x,x,x,x,x,x,x,,x,x,x,x
+dairy,cip,big,6,20,15300,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+dairy,cip,medium,4,20,4100,6,22,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+dairy,cip,small,4,20,2800,6,18,x,x,x,x,x,,,x,x,x,x,x,x,x,,x,x,x,x
+textile,dyeing,big,8,70,12600,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+textile,dyeing,medium,8,70,8400,6,22,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+textile,dyeing,small,6,60,5400,6,22,x,x,x,x,x,x,,x,x,x,x,x,x,x,,x,x,x,x
+meat,scalding,big,6,40,8100,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+meat,scalding,medium,6,20,6200,4,18,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+meat,scalding,small,6,20,3400,6,18,x,x,x,x,x,,,x,x,x,x,x,x,x,,x,x,x,x
+meat,cleaning,big,6,40,8100,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+meat,cleaning,medium,3,20,6200,4,18,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+meat,cleaning,small,3,20,3400,6,18,x,x,x,x,x,,,x,x,x,x,x,x,x,,x,x,x,x
+meat,cooking,big,6,80,8100,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+meat,cooking,medium,6,65,6200,4,18,x,x,x,x,x,x,,x,x,x,x,x,x,x,x,x,x,x,x
+meat,cooking,small,6,65,3400,6,18,x,x,x,x,x,,,x,x,x,x,x,x,x,,x,x,x,x
+cork manufacturing,boiling,big,6,20,3900,1,24,x,x,x,x,x,x,,x,x,x,x,x,,,,x,x,x,x
+cork manufacturing,boiling,medium,3,20,2600,5,20,x,x,x,x,x,,,x,x,x,x,x,,,,x,x,x,x
+cork manufacturing,boiling,small,3,20,980,5,20,x,x,x,x,x,,,x,x,x,x,x,,,,x,x,x,x
+mining,leaching,big,6,80,35600,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+mining,leaching,medium,6,60,19800,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+mining,leaching,small,6,60,9600,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+mining,electro_winning,big,6,80,35600,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+mining,electro_winning,medium,6,60,19800,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x
+mining,electro_winning,small,6,60,9600,1,24,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x

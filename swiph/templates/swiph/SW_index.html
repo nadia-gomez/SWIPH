@@ -1,0 +1,268 @@
+{% extends 'base.html'%}
+
+{% block extra_headers %}
+<style>
+.process_select_title img {
+    max-width: 50px;
+    display:inline;
+}
+  
+.process_select_title h6 {
+    display:inline;
+    position: relative;
+    top: -12px;
+}
+.process_select_title{
+    text-align: center;
+}
+
+</style>
+{% endblock extra_headers %}
+
+{% block content %}
+<div class="container">
+    <section class="section">
+        <h2 class="center">SWIPH</h2>
+        <h3 class="center">SAM Wrapper for Industrial Process Heat</h3>
+        <br>
+        <div class="row">
+            <div class="col l4">
+                <div class="card-panel">  
+                    <div class="row" >
+                        <div class="col l12 m12 s12">
+                            <div class="process_select_title" >
+                                <img src="/static/images/Laundry.png" alt="laundry" style="width: 100%">
+                                <h6>Laundry </h6> 
+                            </div>
+                            <form method="POST">
+                                {% csrf_token %}
+                                    <div class="row">
+                                        <div class="input-field">
+                                            <select name='process'>
+                                                <option value="" disabled="" selected="">Process</option>
+                                                <option value="L_ironing"{% if form.process.value == "L_ironing" %} selected {%endif%}>Ironing</option>
+                                                <option value="L_washing"{% if form.process.value == "L_washing" %} selected {%endif%}>Washing</option>
+                                             
+                                            </select>
+                                            <span class="red-text">{{form.process.errors}}</span>
+                                        </div>    
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field">
+                                            <select name='size'>
+                                                <option value="" disabled="" selected="">Size</option>
+                                                <option value="L_big"{% if form.size.value == "L_big" %} selected {%endif%}>Big</option>
+                                                <option value="L_medium"{% if form.size.value == "L_medium" %} selected {%endif%}>Medium</option>
+                                                <option value="L_small"{% if form.size.value == "L_small" %} selected {%endif%}>Small</option>
+                                            </select>
+                                            <span class="red-text">{{form.size.errors}}</span>
+                                        </div>    
+                                    </div>
+                                
+                                <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col l4 ">
+                <div class="card-panel">  
+                        <div class="row">
+                            <div class="col l12 m12 s12">
+                                <div class="process_select_title" >
+                                    <img src="/static/images/beve.png" alt="Dairy" style="width: 100%">
+                                    <h6>Dairy</h6> 
+                                </div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                        <div class="row">
+                                            <div class="input-field">
+                                                <select name='process'>
+                                                    <option value="" disabled="" selected="">Process</option>
+                                                    <option value="D_pasteurization"{% if form.process.value == "D_pasteurization" %} selected {%endif%}>Pasteurization</option>
+                                                    <option value="D_cip"{% if form.process.value == "D_cip" %} selected {%endif%}>CIP</option>
+                                                    
+                                                </select>
+                                                <span class="red-text">{{form.process.errors}}</span>
+                                            </div>    
+                                        </div>
+                                        <div class="row">
+                                                <div class="input-field">
+                                                    <select name='size'>
+                                                        <option value="" disabled="" selected="">Size</option>
+                                                        <option value="D_big"{% if form.size.value == "D_big" %} selected {%endif%}>Big</option>
+                                                        <option value="D_medium"{% if form.size.value == "D_medium" %} selected {%endif%}>Medium</option>
+                                                        <option value="D_small"{% if form.size.value == "D_small" %} selected {%endif%}>Small</option>
+                                                       
+                                                    </select>
+                                                    <span class="red-text">{{form.size.errors}}</span>
+                                                </div>    
+                                            </div>
+                                    <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> 
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="col l4 ">
+                    <div class="card-panel">  
+                        <div class="row" >
+                            <div class="col l12 m12 s12">
+                                <div class="process_select_title" >
+                                    <img src="/static/images/cork.png" alt="Cork" style="width: 100%">
+                                    <h6>Cork manufacturing </h6> 
+                                </div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                        <div class="row">
+                                            <div class="input-field">
+                                                <select name='process'>
+                                                    <option value="" disabled="" selected="">Process</option>
+                                                    <option value="C_boiling"{% if form.process.value == "C_boiling" %} selected {%endif%}>Boiling</option>
+                                                  
+                                                </select>
+                                                <span class="red-text">{{form.process.errors}}</span>
+                                            </div>    
+                                        </div>
+                                        <div class="row">
+                                                <div class="input-field">
+                                                    <select name='size'>
+                                                        <option value="" disabled="" selected="">Size</option>
+                                                        <option value="C_big"{% if form.size.value == "C_big" %} selected {%endif%}>Big</option>
+                                                        <option value="C_medium"{% if form.size.value == "C_medium" %} selected {%endif%}>Medium</option>
+                                                        <option value="C_small"{% if form.size.value == "C_small" %} selected {%endif%}>Small</option>
+                                                       
+                                                    </select>
+                                                    <span class="red-text">{{form.size.errors}}</span>
+                                                </div>    
+                                            </div>
+                                    <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> 
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col l4">
+                    <div class="card-panel">  
+                        <div class="row" >
+                            <div class="col l12 m12 s12">
+                                <div class="process_select_title" >
+                                    <img src="/static/images/food.png" alt="Food" style="width: 100%">
+                                    <h6>Meat processing </h6> 
+                                </div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                        <div class="row">
+                                            <div class="input-field">
+                                                <select name='process'>
+                                                    <option value="" disabled="" selected="">Process</option>
+                                                    <option value="F_scalding"{% if form.process.value == "F_scalding" %} selected {%endif%}>Scalding</option>
+                                                    <option value="F_cleaning"{% if form.process.value == "F_cleaning" %} selected {%endif%}>Cleaning</option>
+                                                    <option value="F_cooking"{% if form.process.value == "F_cooking" %} selected {%endif%}>Cooking</option>
+                                                   
+                                                </select>
+                                                <span class="red-text">{{form.process.errors}}</span>
+                                            </div>    
+                                        </div>
+                                        <div class="row">
+                                                <div class="input-field">
+                                                    <select name='size'>
+                                                        <option value="" disabled="" selected="">Size</option>
+                                                        <option value="F_big"{% if form.size.value == "F_big" %} selected {%endif%}>Big</option>
+                                                        <option value="F_medium"{% if form.size.value == "F_medium" %} selected {%endif%}>Medium</option>
+                                                        <option value="F_small"{% if form.size.value == "F_small" %} selected {%endif%}>Small</option>
+                                                        
+                                                    </select>
+                                                    <span class="red-text">{{form.size.errors}}</span>
+                                                </div>    
+                                            </div>
+                                    <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> 
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col l4 disabled">
+                        <div class="card-panel">  
+                            <div class="row" >
+                                <div class="col l12 m12 s12">
+                                    <div class="process_select_title" >
+                                        <img src="/static/images/mining.png" alt="Mining" style="width: 100%">
+                                        <h6>Mining</h6> 
+                                    </div>
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                            <div class="row">
+                                                <div class="input-field">
+                                                    <select name='process'>
+                                                        <option value="" disabled="" selected="">Process</option>
+                                                        <option value="M_leaching"{% if form.process.value == "M_leaching" %} selected {%endif%}>Leaching</option>
+                                                        <option value="M_electro_winning"{% if form.process.value == "M_electro_winning" %} selected {%endif%}>Electro winning</option>
+                                                     
+                                                    </select>
+                                                    <span class="red-text">{{form.process.errors}}</span>
+                                                </div>    
+                                            </div>
+                                            <div class="row">
+                                                    <div class="input-field">
+                                                        <select name='size'>
+                                                            <option value="" disabled="" selected="">Size</option>
+                                                            <option value="M_big"{% if form.size.value == "M_big" %} selected {%endif%}>Big</option>
+                                                            <option value="M_medium"{% if form.size.value == "M_medium" %} selected {%endif%}>Medium</option>
+                                                            <option value="M_small"{% if form.size.value == "M_small" %} selected {%endif%}>Small</option>
+                                                           
+                                                        </select>
+                                                        <span class="red-text">{{form.size.errors}}</span>
+                                                    </div>    
+                                                </div>
+                                        <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> 
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col l4  ">
+                        <div class="card-panel">  
+                            <div class="row" >
+                                <div class="col l12 m12 s12">
+                                    <div class="process_select_title" >
+                                        <img src="/static/images/textile.png" alt="Textile" style="width: 100%">
+                                        <h6>Textile</h6> 
+                                    </div>
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                            <div class="row">
+                                                <div class="input-field">
+                                                    <select name='process'>
+                                                        <option value="" disabled="" selected="">Process</option>
+                                                        <option value="T_dyeing"{% if form.process.value == "T_dyeing" %} selected {%endif%}>Dyeing</option>
+                                                       
+                                                    </select>
+                                                    <span class="red-text">{{form.process.errors}}</span>
+                                                </div>    
+                                            </div>
+                                            <div class="row">
+                                                    <div class="input-field">
+                                                        <select name='size'>
+                                                            <option value="" disabled="" selected="">Size</option>
+                                                            <option value="T_big"{% if form.size.value == "T_big" %} selected {%endif%}>Big</option>
+                                                            <option value="T_medium"{% if form.size.value == "T_medium" %} selected {%endif%}>Medium</option>
+                                                            <option value="T_small"{% if form.size.value == "T_small" %} selected {%endif%}>Small</option>
+                                                           
+                                                        </select>
+                                                        <span class="red-text">{{form.size.errors}}</span>
+                                                    </div>    
+                                                </div>
+                                        <button type="submit" class="waves-effect waves-light btn-small ">ENTER</button> 
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+name: SAM
+channels:
+  - defaults
+dependencies:
+  - python=3.6
+  - scipy
+  - django=2.0
+  - pandas
+  - celery
+  - bokeh
+  - joblib
+  - matplotlib
+  - scikit-learn
+  - ipython
+  - pip:
+    - django-admin-view-permission
+    - nrel-pysam
+    
+prefix: /home/ubuntu/.miniconda3/envs/SAM
+

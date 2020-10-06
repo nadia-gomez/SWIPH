@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Personal website of Miguel Frasquet">
+    <title>Miguel Frasquet 🌤️</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="/static/images/web/favicon.ico"/>
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.css" rel="stylesheet" type="text/css">
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.css" rel="stylesheet" type="text/css">
+    {% block extra_headers %}
+    {% endblock extra_headers %}
+    </head>
+<body>
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.js"></script>
+
+    {% block content %}
+    
+
+
+    {% endblock %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/simulation.js' %}"></script>
+    <script src="{% static 'js/simulation_crm.js' %}"></script>
+
+ 
+    
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    
+    <script>
+        var csrf_token='{{csrf_token}}'
+    </script>
+    <script>
+            $(document).ready(function() {
+    $('select').formSelect();
+  });
+    </script>
+    </body>
+</html>

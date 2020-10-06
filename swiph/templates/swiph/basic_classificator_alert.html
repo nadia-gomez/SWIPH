@@ -1,0 +1,37 @@
+
+
+{% if error %}
+
+    <p>Looks like the simulation you will attempt to do will lead to an error of the kind:</p>
+    {{error.error}}
+    <p>We can recommend you to change some of the variables as follows</p>
+    Process pressure: {{P_turb_des}}<br>
+    Inlet temperature:{{T_cold_ref}}<br>
+    Number of modules:{{nModBoil}}<br>
+    <button type="button" onclick="accept_sugestion({{P_turb_des}},{{T_cold_ref}},{{nModBoil}})">Accept suggestion</button>
+    <script>
+        function accept_sugestion(P_turb_des,T_cold_ref,nModBoil){
+            console.log("Accepted the suggestion")
+            document.getElementById("pressure_id").value=P_turb_des;
+            document.getElementById("tempIN_id").value=T_cold_ref;
+            document.getElementById("{{f.nModBoil.id_for_label}}").value=nModBoil;
+            console.log("Before ajax")
+            $.ajax({
+                url:"{% url 'async_basic_classificator' %}",
+                data:{
+                    'P_turb_des': P_turb_des,
+                    'T_cold_ref': T_cold_ref,
+                    'nModBoil': nModBoil,
+                    'location': "{{location}}",
+                },
+                success: function(result){
+                    $("#classificator_alert").html(result);
+                    },
+            });
+        }
+    </script>
+{% else %}
+    No errors
+    <p>Everything looks great!</p>
+    
+{% endif %}

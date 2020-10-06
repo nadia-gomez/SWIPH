@@ -1,0 +1,429 @@
+{% extends 'base.html'%}
+
+{% block extra_headers %}
+<style>
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+{% endblock extra_headers %}
+
+{% block content %}
+<div id="loader" style="display:none;"></div>
+<div id="main_container" class="containerBasic">
+    <section class="section">
+        <h4 class="center"> <b>ADVANCED INPUTS</b> - Simulation {{id}} - {{industry}}</h4>
+        <h6 class="center"> <b>SAM IPH DSG - Fresnel model </b></h6>
+        <br>
+        <h6 class="center">These are the advanced inputs for the simulation in SAM. If you do not how to fill them, SWIPH will do it for you</h6>
+        <br>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row" style="display: flex;align-items: center;">
+                <button onclick="load_results()" type="submit" class="waves-effect waves-light btn-small center">CONTINUE WITH THE SIMULATION</button>
+                <a href='{% url "basicInput" pk=id %}' class="waves-effect waves-light cyan darken-4 btn-small"><b>BACK TO BASIC INPUTS</b> </a>
+
+            </div>
+            <script>
+                function load_results(){
+                    document.getElementById('main_container').style.display='none'
+                    document.getElementById('loader').style.display='block';
+                }
+            </script>
+
+            <div class="row">
+                <div class="col l12">
+                    <div class="card-panel" style="background-color:lightsteelblue">
+                        
+                        <div class="row" style="display: flex;align-items: center;">
+                            
+                            <div class="col l4"> <span> <b> Initial pre-design </b> </span>  </div>
+                            <div class="col l2"> <span> Numer of parallel loops: </span>  </div>
+                            <div class="col l1">
+                                <input name="nLoops" placeholder="Parallel loops" value="{{form.nLoops.value|default:nLoops}}" >
+                                <span class="red-text">{{form.nLoops.errors}}</span>
+                            </div>
+                            <div class="col l2"> <span> Numer of collectors per loop: </span>  </div>
+                            <div class="col l1">
+                                <input name="nModBoil" placeholder="Nb of modules" value="{{form.nModBoil.value|default:nModBoil}}" >
+                                <span class="red-text">{{form.nModBoil.errors}}</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="row">
+                <div class="col l6">
+                    <div class="card-panel"> 
+                    <h6 class="center">System design</h6>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l6"> <span> <b>Design point irradiation value:</b> </span>  </div>
+                        <div class="col l4">
+                            <input name="I_bn_des" placeholder="Design DNI" value="{{form.I_bn_des.value|default:950}}" >
+                            <span class="red-text">{{form.I_bn_des.errors}}</span>
+                        </div>
+                        <div class="col l2"> <span> W/m<sup>2</sup> </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l6"> <span> <b>Boiler outlet steam quality:</b> </span>  </div>
+                        <div class="col l4">
+                            <input name="x_b_des" placeholder="Steam quality" value="{{form.x_b_des.value|default:0.8}}" >
+                            <span class="red-text">{{form.x_b_des.errors}}</span>
+                        </div>
+                        <div class="col l2"> <span>  </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l9"> <span> <b>Fractional pressure drop through heat sink:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="heat_sink_dP_frac" placeholder="PD heat sink" value="{{form.heat_sink_dP_frac.value|default:0}}" >
+                            <span class="red-text">{{form.heat_sink_dP_frac.errors}}</span>
+                        </div>
+                    </div>
+                    <br>
+                    <h6 class="center">SOLAR FIELD</h6>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Solar Field Parameters </i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l9"> <span> <b>Solar elevation for collector morning deploy:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="theta_dep" placeholder="theta deploy" value="{{form.theta_dep.value|default:10}}" >
+                            <span class="red-text">{{form.theta_dep.errors}}</span>
+                        </div>
+                        <div class="col l1"> <span> <sup>o</sup> </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l9"> <span> <b>Solar elevation for collector nightime stow:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="theta_stow" placeholder="theta stow" value="{{form.theta_stow.value|default:10}}" >
+                            <span class="red-text">{{form.theta_stow.errors}}</span>
+                        </div>
+                        <div class="col l1"> <span> <sup>o</sup> </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l9"> <span> <b>Max. allowable wind velocity before stow:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="V_wind_max" placeholder="Wind vel max" value="{{form.V_wind_max.value|default:120}}" >
+                            <span class="red-text">{{form.V_wind_max.errors}}</span>
+                        </div>
+                        <div class="col l1"> <span> m/s </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l9"> <span> <b>Collector azimuth angle:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="ColAz" placeholder="Collector azimuth" value="{{form.ColAz.value|default:0}}" >
+                            <span class="red-text">{{form.ColAz.errors}}</span>
+                        </div>
+                        <div class="col l1"> <span> <sup>o</sup> </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l9"> <span> <b>Design-point ambient temperature:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="T_amb_des_sf" placeholder="Design amb temp" value="{{form.T_amb_des_sf.value|default:42}}" >
+                            <span class="red-text">{{form.T_amb_des_sf.errors}}</span>
+                        </div>
+                        <div class="col l1"> <span> <sup>o</sup>C </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l7"> <span> <b>Tracking energy consumption:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="SCA_drives_elec" placeholder="Tracking power" value="{{form.SCA_drives_elec.value|default:0}}" >
+                            <span class="red-text">{{form.SCA_drives_elec.errors}}</span>
+                        </div>
+                        <div class="col l2"> <span> W/m<sup>2</sup> </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l7"> <span> <b>Heat loss coef. from the header, runner pipe, and non-HCE piping:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="Pipe_hl_coef" placeholder="Loss header" value="{{form.Pipe_hl_coef.value|default:0}}" >
+                            <span class="red-text">{{form.Pipe_hl_coef.errors}}</span>
+                        </div>
+                        <div class="col l2"> <span> W/m<sup>2</sup>K </span>  </div>
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Mirror Washing </i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l5"> <span> <b>Water usage per wash:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="csp_lf_sf_water_per_wash" placeholder="Water/wash" value="{{form.csp_lf_sf_water_per_wash.value|default:0.0199}}" >
+                            <span class="red-text">{{form.csp_lf_sf_water_per_wash.errors}}</span>
+                        </div>
+                        <div class="col l4"> <span> L/m<sup>2</sup> (Aperture) </span>  </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l5"> <span> <b>Mirror washing annual frequency:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="csp_lf_sf_washes_per_year" placeholder="Water/wash" value="{{form.csp_lf_sf_washes_per_year.value|default:12}}" >
+                            <span class="red-text">{{form.csp_lf_sf_washes_per_year.errors}}</span>
+                        </div>
+                        <div class="col l4"> <span> times per year </span>  </div>
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Steam Design Conditions </i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Design cold header pressure drop:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="fP_hdr_c" placeholder="Cold header pressure drop" value="{{form.fP_hdr_c.value|default:0}}" >
+                            <span class="red-text">{{form.fP_hdr_c.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Pressure drop across the solar field:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="fP_sf_boil" placeholder="Solar receiver pressure drop" value="{{form.fP_sf_boil.value|default:0}}" >
+                            <span class="red-text">{{form.fP_sf_boil.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Design hot header pressure drop:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="fP_hdr_h" placeholder="Hot header pressure drop" value="{{form.fP_hdr_h.value|default:0}}" >
+                            <span class="red-text">{{form.fP_hdr_h.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Freeze protection temperature:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="T_fp" placeholder="Freeze protection temperature" value="{{form.T_fp.value|default:5}}" >
+                            <span class="red-text">{{form.T_fp.errors}}</span>
+                        </div>
+                        <div class="col l1"> <sup>o</sup>C </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Feedwater pump efficiency:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="eta_pump" placeholder="Feedwater pump efficiency" value="{{form.eta_pump.value|default:1}}" >
+                            <span class="red-text">{{form.eta_pump.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                            <span> <i>Plant Heat Capacity </i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l7"> <span> <b>Thermal inertia contribution:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="e_startup" placeholder="Thermal inertia" value="{{form.e_startup.value|default:1}}" >
+                            <span class="red-text">{{form.e_startup.errors}}</span>
+                        </div>
+                        <div class="col l2">kJ/K-m<sup>2</sup> </div>
+                    </div>
+                    <br>
+                    <h6 class="center">COLLECTOR & RECEIVER</h6>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Geometry and Optical Performance</i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Reflective aperture area of the collector:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="A_aperture" placeholder="Aperture area" value="{{form.A_aperture.value|default:26.4}}" >
+                            <span class="red-text">{{form.A_aperture.errors}}</span>
+                        </div>
+                        <div class="col l1">m<sup>2</sup> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>Lenght of the solar collector:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="L_col" placeholder="Lengh of collector" value="{{form.L_col.value|default:6}}" >
+                            <span class="red-text">{{form.L_col.errors}}</span>
+                        </div>
+                        <div class="col l1">m </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>User-defined tracking error derate:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="TrackingError" placeholder="Tracking error" value="{{form.TrackingError.value|default:1}}" >
+                            <span class="red-text">{{form.TrackingError.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>User-defined geometry effects derate:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="GeomEffects" placeholder="Geometry effects" value="{{form.GeomEffects.value|default:0.8399999737739563}}" >
+                            <span class="red-text">{{form.GeomEffects.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>User-defined clean mirror reflectivity:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="rho_mirror_clean" placeholder="Mirror  reflectivity" value="{{form.rho_mirror_clean.value|default:0.93500000}}" >
+                            <span class="red-text">{{form.rho_mirror_clean.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>User-defined dirt on mirror derate:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="dirt_mirror" placeholder="Dirt mirror" value="{{form.dirt_mirror.value|default:1}}" >
+                            <span class="red-text">{{form.dirt_mirror.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l8"> <span> <b>User-def. general optical error derate:</b> </span>  </div>
+                        <div class="col l3">
+                            <input name="error" placeholder="general error" value="{{form.error.value|default:1}}" >
+                            <span class="red-text">{{form.error.errors}}</span>
+                        </div>
+                        <div class="col l1"> </div>
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Optical characterization of the collector</i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l3"> <span> <b>IAM transv:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="IAM_T0" placeholder="coef0" value="{{form.IAM_T0.value|default:1.01}}" >
+                            <span class="red-text">{{form.IAM_T0.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_T1" placeholder="coef1" value="{{form.IAM_T1.value|default:-0.295}}" >
+                            <span class="red-text">{{form.IAM_T1.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_T2" placeholder="coef2" value="{{form.IAM_T2.value|default:0.963}}" >
+                            <span class="red-text">{{form.IAM_T2.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_T3" placeholder="coef3" value="{{form.IAM_T3.value|default:-1.23}}" >
+                            <span class="red-text">{{form.IAM_T3.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_T4" placeholder="coef4" value="{{form.IAM_T4.value|default:0.308}}" >
+                            <span class="red-text">{{form.IAM_T4.errors}}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l3"> <span> <b>IAM long:</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="IAM_L0" placeholder="coef0" value="{{form.IAM_L0.value|default:1}}" >
+                            <span class="red-text">{{form.IAM_L0.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_L1" placeholder="coef1" value="{{form.IAM_L1.value|default:-0.134}}" >
+                            <span class="red-text">{{form.IAM_L1.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_L2" placeholder="coef2" value="{{form.IAM_L2.value|default:-0.175}}" >
+                            <span class="red-text">{{form.IAM_L2.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_L3" placeholder="coef3" value="{{form.IAM_L3.value|default:-0.394}}" >
+                            <span class="red-text">{{form.IAM_L3.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="IAM_L4" placeholder="coef4" value="{{form.IAM_L4.value|default:0.190}}" >
+                            <span class="red-text">{{form.IAM_L4.errors}}</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Receiver polynomial heat loss model</i> </span>    
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Polinomial for losses due temperature differece Tc-Ta [K]</i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l2"> <span> <b>[W] P_n(ΔT):</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="HL_dT_0" placeholder="coef0" value="{{form.HL_dT_0.value|default:0}}" >
+                            <span class="red-text">{{form.HL_dT_0.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_dT_1" placeholder="coef1" value="{{form.HL_dT_1.value|default:0.672}}" >
+                            <span class="red-text">{{form.HL_dT_1.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_dT_2" placeholder="coef2" value="{{form.HL_dT_2.value|default:0.00255}}" >
+                            <span class="red-text">{{form.HL_dT_2.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_dT_3" placeholder="coef3" value="{{form.HL_dT_3.value|default:0}}" >
+                            <span class="red-text">{{form.HL_dT_3.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_dT_4" placeholder="coef4" value="{{form.HL_dT_4.value|default:0}}" >
+                            <span class="red-text">{{form.HL_dT_4.errors}}</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <span> <i>Polinomial for factor of losses due wind velocity v[m/s]</i> </span>    
+                    </div>
+                    <div class="row" style="display: flex;align-items: center;">
+                        <div class="col l2"> <span> <b>[-] P_n(v):</b> </span>  </div>
+                        <div class="col l2">
+                            <input name="HL_W_0" placeholder="coef0" value="{{form.HL_W_0.value|default:1}}" >
+                            <span class="red-text">{{form.HL_W_0.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_W_1" placeholder="coef1" value="{{form.HL_W_1.value|default:0}}" >
+                            <span class="red-text">{{form.HL_W_1.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_W_2" placeholder="coef2" value="{{form.HL_W_2.value|default:0}}" >
+                            <span class="red-text">{{form.HL_W_2.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_W_3" placeholder="coef3" value="{{form.HL_W_3.value|default:0}}" >
+                            <span class="red-text">{{form.HL_W_3.errors}}</span>
+                        </div>
+                        <div class="col l2">
+                            <input name="HL_W_4" placeholder="coef4" value="{{form.HL_W_4.value|default:0}}" >
+                            <span class="red-text">{{form.HL_W_4.errors}}</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col l6">
+                    <div class="card-panel">
+                        <h6 class="center">Input description</h6>
+                        <br>
+                        <span>Under construction</span>
+                    </div>
+                </div>
+            </div>
+        </form>    
+    </section>
+</div>
+{% endblock %}
