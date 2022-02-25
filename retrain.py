@@ -1,10 +1,10 @@
-#Set up to connect to django
+# Set up to connect to django
 import os
 import django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'miguel.settings'
 django.setup()
 
-#Connect and manage the datbase
+# Connect and manage the datbase
 from swiph.models import BasicMachineLearningDB
 import pandas as pd
 import numpy as np
